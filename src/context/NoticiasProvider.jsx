@@ -11,7 +11,7 @@ const NoticiasProvider = ({ children }) => {
 
     useEffect(() => {
         const consultarApi = async () => {
-            const url = `https://newsapi.org/v2/top-headlines?country=ar&category=${categoria}&apiKey=${import.meta.env.VITE_API_KEY}`
+            const url = `https://newsapi.org/v2/top-headlines?country=us&category=${categoria}&apiKey=${import.meta.env.VITE_API_KEY}`
     
             const { data } = await axios(url)
             setNoticias(data.articles)
@@ -22,8 +22,21 @@ const NoticiasProvider = ({ children }) => {
         consultarApi()
     },[categoria])
 
+    useEffect(() => {
+        const consultarApi = async () => {
+            const url = `https://newsapi.org/v2/top-headlines?country=us&category=${categoria}&apiKey=${import.meta.env.VITE_API_KEY}&page=${pagina}`
+    
+            const { data } = await axios(url)
+            setNoticias(data.articles)
+            console.log(data)
+            setTotalNoticias(data.totalResults)
+            setPagina(1)
+        }
+        consultarApi()
+    }, [pagina, categoria])
+
     const handleChangeCategoria = e => {
-        setCategoria(e.prevent.default)
+        setCategoria(e.target.value)
     }
 
     const handleChangePagina = (e, valor) => {
@@ -48,4 +61,9 @@ const NoticiasProvider = ({ children }) => {
      );
 }
  
-export default NoticiasProvider;
+export {
+    NoticiasProvider
+} 
+
+export default NoticiasContext;
+    
